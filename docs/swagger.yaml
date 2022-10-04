@@ -1,0 +1,134 @@
+definitions:
+  models.Person:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.RequestPerson:
+    properties:
+      address:
+        type: string
+      name:
+        type: string
+    required:
+    - address
+    - name
+    type: object
+  views.GetAllPeopleSwagger:
+    properties:
+      error: {}
+      message:
+        example: GET_SUCCESS
+        type: string
+      payload:
+        items:
+          $ref: '#/definitions/models.Person'
+        type: array
+      status:
+        example: 200
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /peopels:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.GetAllPeopleSwagger'
+      summary: Get all people
+      tags:
+      - People
+  /peoples:
+    post:
+      description: Insert a person JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Insert People
+        in: body
+        name: people
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestPerson'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Person'
+      summary: Store a new people
+      tags:
+      - People
+  /peoples/{id}:
+    delete:
+      description: Delete a People.
+      parameters:
+      - description: Delete People By Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Delete People
+          schema:
+            type: string
+      summary: Delete People By Id
+      tags:
+      - People
+    get:
+      description: Get a People.
+      parameters:
+      - description: Get People By Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Person'
+      summary: Get People By Id
+      tags:
+      - People
+  /peoples{id}:
+    put:
+      description: Update a person JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Update People By Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update People
+        in: body
+        name: people
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestPerson'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success Update People
+          schema:
+            type: string
+      summary: Update a people
+      tags:
+      - People
+swagger: "2.0"
